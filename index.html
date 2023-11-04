@@ -200,7 +200,7 @@
                     <div class="bg-primary text-center p-5">
                         <h1 class="text-white font-weight-bold">Subscribe My Newsletter</h1>
                         <p class="text-white">Subscribe and get my latest article in your inbox</p>
-                        <form class="form-inline justify-content-center">
+                        <form class="form-inline justify-content-center" name="submit-to-google-sheet">
                             <div class="input-group">
                                 <input type="text" class="form-control border-0 p-4" placeholder="name@email.com">
                                 <div class="input-group-append">
@@ -445,5 +445,18 @@
 
         <!-- Template Javascript -->
         <script src="js/main.js"></script>
+        
+        <!-- Subscribtion to GoogleSheet -->
+        <script>
+        const scriptURL = 'https://script.google.com/macros/s/AKfycbwudjBIgd4YE3ruIytiCBOhaBQsW8GyfM-RIT8FzKEOqQUW10b7f_pe3vVUtA2yBTlo/exec'
+        const form = document.forms['submit-to-google-sheet']
+
+          form.addEventListener('submit', e => {
+            e.preventDefault()
+            fetch(scriptURL, { method: 'POST', body: new FormData(form)})
+              .then(response => console.log('Success!', response))
+              .catch(error => console.error('Error!', error.message))
+          })
+        </script>
     </body>
 </html>
