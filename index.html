@@ -377,7 +377,7 @@
                         <div class="col-12">
                             <div class="contact-form">
                                 <div id="success"></div>
-                                <form Action="send_mail.php" method="POST" name="sentMessage" id="contactForm" novalidate="novalidate">
+                                <form  id="contactForm" >
                                     <div class="form-row">
                                         <div class="control-group col-sm-6">
                                             <input type="text" class="form-control p-4" id="name" name="name" placeholder="Your Name"
@@ -451,8 +451,9 @@
         <script src="lib/lightbox/js/lightbox.min.js"></script>
 
         <!-- Contact Javascript File -->
+        <!--
         <script src="mail/jqBootstrapValidation.min.js"></script>
-        <script src="mail/contact.js"></script>
+        <script src="mail/contact.js"></script> -->
 
         <!-- Template Javascript -->
         <script src="js/main.js"></script>
@@ -469,5 +470,60 @@
               .catch(error => console.error('Error!', error.message))
           })
         </script>
+        <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+
+<script>
+(function () {
+    emailjs.init({
+        publicKey: "sHhcwvZOqFZwE48JH",
+    });
+})();
+
+const contactForm = document.getElementById("contactForm");
+const sendBtn = document.getElementById("sendMessageButton");
+
+contactForm.addEventListener("submit", function (e) {
+
+    e.preventDefault();
+
+    sendBtn.disabled = true;
+    sendBtn.innerHTML = "Sending...";
+
+    const templateParams = {
+        from_name: document.getElementById("name").value.trim(),
+        from_email: document.getElementById("email").value.trim(),
+        subject: document.getElementById("subject").value.trim(),
+        message: document.getElementById("message").value.trim()
+    };
+
+    emailjs.send(
+        "service_dkxrr9l",
+        "template_k6hzv49",
+        templateParams
+    )
+    .then(function () {
+
+        alert("Thank you! Your message has been sent successfully.");
+
+        contactForm.reset();
+
+        sendBtn.disabled = false;
+        sendBtn.innerHTML = "Send Message";
+
+    })
+    .catch(function (error) {
+
+        console.error("EmailJS Error:", error);
+
+        alert("Sorry, the message could not be sent. Please try again.");
+
+        sendBtn.disabled = false;
+        sendBtn.innerHTML = "Send Message";
+    });
+
+});
+</script>
     </body>
 </html>
